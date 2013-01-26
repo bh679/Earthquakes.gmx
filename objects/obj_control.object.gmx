@@ -29,6 +29,7 @@
 earthquakeSize = 0
 earthquakeX = 0
 EARTHQUAKEMAX = 100
+EARTHQUAKEMIN = 40
 timer = 30*room_speed
 </string>
           </argument>
@@ -155,7 +156,7 @@ if mouse_check_button_released(mb_right)
 if timer &lt;= 0
 {
     earthquakeX = random(room_width)
-    earthquakeSize = random(EARTHQUAKEMAX)
+    earthquakeSize = random(EARTHQUAKEMAX - EARTHQUAKEMIN) + EARTHQUAKEMIN
     earthquake()
     timer = 20*room_speed // need to change
 }

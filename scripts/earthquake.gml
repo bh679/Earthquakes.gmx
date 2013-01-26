@@ -6,9 +6,11 @@ with(obj_building)
     buildingWidth = image_xscale*TILESIZE
     if maxDistanceToEarthquake < obj_control.earthquakeSize
         instance_destroy()
-    else if minDistanceToEarthquake < obj_control.earthquakeSize
+    else if minDistanceToEarthquake < obj_control.earthquakeSize 
         //damage
-        //image_blend = merge_color(image_blend,c_red,minDistanceToEarthquake/maxDistanceToEarthquake)
         obj_health -= (obj_control.earthquakeSize - minDistanceToEarthquake)/(maxDistanceToEarthquake-minDistanceToEarthquake)*100
-    obj_control.EARTHQUAKEMAX += 50
+    else if (obj_control.earthquakeX > x and obj_control.earthquakeX < x+buildingWidth)
+        //damage from inside
+        obj_health -= (obj_control.earthquakeSize*2)/buildingWidth*100
 }
+obj_control.EARTHQUAKEMAX += 50
