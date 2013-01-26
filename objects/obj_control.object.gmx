@@ -28,6 +28,8 @@
             <string>newBuilding = false
 earthquakeSize = 0
 earthquakeX = 0
+EARTHQUAKEMAX = 100
+timer = 30*room_speed
 </string>
           </argument>
         </arguments>
@@ -145,20 +147,45 @@ if mouse_check_button(mb_right)
 
 if mouse_check_button_released(mb_right)
 {
-    with(obj_building)
-    {
-        //check from both sides of building
-        minDistanceToEarthquake = min(point_distance(x,0,obj_control.earthquakeX,0),point_distance(x+image_xscale*TILESIZE,0,obj_control.earthquakeX,0))
-        maxDistanceToEarthquake = max(point_distance(x,0,obj_control.earthquakeX,0),point_distance(x+image_xscale*TILESIZE,0,obj_control.earthquakeX,0))
-        if maxDistanceToEarthquake &lt; obj_control.earthquakeSize
-            instance_destroy()
-        else if minDistanceToEarthquake &lt; obj_control.earthquakeSize
-            //damage
-            image_blend = merge_color(image_blend,c_red,minDistanceToEarthquake/maxDistanceToEarthquake)
-    }
+    earthquake()
     //reset earthquake
     earthquakeSize = 0
 }
+
+if timer &lt;= 0
+{
+    earthquakeX = random(room_width)
+    earthquakeSize = random(EARTHQUAKEMAX)
+    earthquake()
+    timer = 20*room_speed // need to change
+}
+timer -= 1
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="64">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>//debuggin
+/**/
+
+draw_text(10,10,"Timer: " + string(timer/room_speed))
 </string>
           </argument>
         </arguments>
@@ -184,6 +211,8 @@ if mouse_check_button_released(mb_right)
             <string>draw_set_color(c_red)
 draw_circle(earthquakeX,GROUND,earthquakeSize,true)
 draw_set_color(c_black)
+
+
 </string>
           </argument>
         </arguments>

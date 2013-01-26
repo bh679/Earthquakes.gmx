@@ -20,6 +20,7 @@
   <scripts name="scripts">
     <script>scripts\xIsInDoor.gml</script>
     <script>scripts\calcTileSprite.gml</script>
+    <script>scripts\earthquake.gml</script>
   </scripts>
   <objects name="objects">
     <object>objects\obj_control</object>

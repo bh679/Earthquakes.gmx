@@ -33,6 +33,8 @@ for(i = 0; i &lt; MAXDOORS; i++)
     door[i] = currPos + ceil(random(10))
     currPos += door[i]
 }
+
+obj_health = 100
 </string>
           </argument>
         </arguments>
@@ -64,7 +66,32 @@ else
 
 image_yscale = max(1,ceil((y - y2)/TILESIZE))
 
-
+if obj_health &lt;= 0
+    instance_destroy()
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="64">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>
+draw_healthbar(x,y-image_yscale*TILESIZE - 10, x+100, y-image_yscale*TILESIZE - 20,obj_health,c_red,c_green,c_green,0,true,true)
 </string>
           </argument>
         </arguments>
@@ -97,7 +124,7 @@ for(yy = 0; yy &lt; image_yscale; yy++)
 {
         for(xx = 0; xx &lt; abs(image_xscale); xx++)
         {
-            random_set_seed(x/TILESIZE + y*image_xscale)
+            random_set_seed(xx + yy*image_xscale)
             tileX = x+abs(image_xscale)/image_xscale*xx*TILESIZE
             tileY = y-yy*TILESIZE
             tileSprite = calcTileSprite()
@@ -110,7 +137,9 @@ for(yy = 0; yy &lt; image_yscale; yy++)
 }
 randomize()
 
-draw_set_color(c_black)
+
+//debuggin
+/*draw_set_color(c_black)
 draw_text(10,10,"y: " + string(y) + " x: " + string(y))
 draw_text(10,40,"yscale: " + string(image_yscale))
 draw_text(10,70,"xscale: " + string(image_xscale))
