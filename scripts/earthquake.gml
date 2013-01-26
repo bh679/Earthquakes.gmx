@@ -13,4 +13,4 @@ with(obj_building)
         //damage from inside
         obj_health -= (obj_control.earthquakeSize*2)/buildingWidth*100
 }
-obj_control.EARTHQUAKEMAX += 50
+obj_control.EARTHQUAKEMAX += 10

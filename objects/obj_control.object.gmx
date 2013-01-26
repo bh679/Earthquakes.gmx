@@ -31,6 +31,7 @@ earthquakeX = 0
 EARTHQUAKEMAX = 100
 EARTHQUAKEMIN = 40
 timer = 30*room_speed
+tempCost = 0
 </string>
           </argument>
         </arguments>
@@ -74,7 +75,7 @@ timer = 30*room_speed
           <argument>
             <kind>1</kind>
             <string>//create building
-if mouse_check_button_pressed(mb_left)
+if mouse_check_button_pressed(mb_left) and resource &gt; 0
 {
     //create instance and define posiition
     newBuilding = instance_create(floor(mouse_x/TILESIZE)*TILESIZE ,GROUND ,obj_building)  
@@ -89,15 +90,71 @@ if newBuilding != false
     //resize building
     newBuilding.x2 = floor(mouse_x/TILESIZE)*TILESIZE
     newBuilding.y2 = floor(mouse_y/TILESIZE)*TILESIZE
+    tempCost = abs(newBuilding.image_xscale) * newBuilding.image_yscale
     
     //set the building
     if mouse_check_button_released(mb_left)
     {
         newBuilding.built = true
         newBuilding = false
+        resource -= tempCost
+        tempCost = 0
     }
 
 }
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>scoring</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>
+//calc space city can hold
+citySize = 0
+with(obj_building)
+{
+    obj_control.citySize += abs(image_xscale*image_yscale)
+}
+
+people = citySize
+if timer = 0
+    resource += people
+
+
 </string>
           </argument>
         </arguments>
@@ -166,6 +223,76 @@ timer -= 1
         </arguments>
       </action>
     </event>
+    <event eventtype="7" enumb="4">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>people = 0
+resource = 10000
+citySize = 0 
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>audio_play_music(sound0,true)
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>211</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>1</exetype>
+        <functionname>action_sound</functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>6</kind>
+            <sound>sound0</sound>
+          </argument>
+          <argument>
+            <kind>3</kind>
+            <string>1</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="8" enumb="64">
       <action>
         <libid>1</libid>
@@ -187,6 +314,8 @@ timer -= 1
 /**/
 
 draw_text(10,10,"Timer: " + string(timer/room_speed))
+draw_text(10,30,"People: " + string(people) + "/" + string(citySize))
+draw_text(10,50,"Resources: " + string(resource)  + " : " + string(resource - tempCost))
 </string>
           </argument>
         </arguments>

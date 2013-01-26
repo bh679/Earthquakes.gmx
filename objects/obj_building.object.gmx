@@ -35,6 +35,9 @@ for(i = 0; i &lt; MAXDOORS; i++)
 }
 
 obj_health = 100
+
+mouseSizeX = 0
+mouseSizeY = 0
 </string>
           </argument>
         </arguments>
@@ -57,15 +60,38 @@ obj_health = 100
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>image_xscale = -(x - x2)/TILESIZE
-
-if image_xscale &lt; 0
-    image_xscale = min(-1,floor(image_xscale))
-else
-    image_xscale = max(1,ceil(image_xscale))
-
-image_yscale = max(1,ceil((y - y2)/TILESIZE))
-
+            <string>if built = false// and obj_control.resource &gt; abs(image_xscale)*image_yscale
+{
+    mouseSizeX = -(x - x2)/TILESIZE
+        
+    if mouseSizeX &lt; 0
+        mouseSizeX = min(-1,floor(mouseSizeX))
+    else
+        mouseSizeX = max(1,ceil(mouseSizeX))
+        
+    mouseSizeY = max(1,ceil((y - y2)/TILESIZE))
+    
+    //biggest building can go with resouces
+    if obj_control.resource &gt;= abs(mouseSizeX)*mouseSizeY
+    {
+        do
+        {
+            if image_xscale &lt; mouseSizeX
+                image_xscale++
+            else if image_xscale &gt; mouseSizeX
+                image_xscale--
+                
+            if image_yscale &lt; mouseSizeY
+                image_yscale++
+            else if image_yscale &gt; mouseSizeY
+                image_yscale--
+                
+                
+        }until (image_xscale = mouseSizeX and image_yscale = mouseSizeY
+            or  obj_control.resource &gt; abs(image_xscale)*image_yscale)
+    }
+    
+}
 if obj_health &lt;= 0
     instance_destroy()
 </string>
@@ -92,6 +118,9 @@ if obj_health &lt;= 0
             <kind>1</kind>
             <string>
 draw_healthbar(x,y-image_yscale*TILESIZE - 10, x+100, y-image_yscale*TILESIZE - 20,obj_health,c_red,c_green,c_green,0,true,true)
+
+draw_set_color(c_red)
+draw_text(mouse_x,mouse_y+10,string(abs(mouseSizeX)*mouseSizeY))
 </string>
           </argument>
         </arguments>
